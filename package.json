@@ -1,0 +1,53 @@
+{
+  "name": "twitchplayschess",
+  "version": "1.0.0",
+  "description": "Play chess against Twitch chat in a clientside application with minimal set-up",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server",
+    "build-client-watch": "webpack -w",
+    "start-server": "nodemon server",
+    "start-dev": "npm run start-server & npm run build-client-watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnawg/twitchPlaysChess.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gnawg/twitchPlaysChess/issues"
+  },
+  "homepage": "https://github.com/gnawg/twitchPlaysChess#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.18.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "webpack": "^5.17.0",
+    "webpack-cli": "^4.4.0"
+  },
+  "dependencies": {
+    "chess.js": "^0.11.0",
+    "chessboardjsx": "^2.4.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "tms.js": "0.0.1"
+  }
+}

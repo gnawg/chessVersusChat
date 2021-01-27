@@ -1,5 +1,5 @@
 {
-  "name": "twitchplayschess",
+  "name": "chessversuschat",
   "version": "1.0.0",
   "description": "Play chess against Twitch chat in a clientside application with minimal set-up",
   "main": "index.js",
@@ -10,16 +10,8 @@
     "start-server": "nodemon server",
     "start-dev": "npm run start-server & npm run build-client-watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gnawg/twitchPlaysChess.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/gnawg/twitchPlaysChess/issues"
-  },
-  "homepage": "https://github.com/gnawg/twitchPlaysChess#readme",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",

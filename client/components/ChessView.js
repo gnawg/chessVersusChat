@@ -1,11 +1,12 @@
 import React from "react";
 import Chessboard from "chessboardjsx";
 import { useDispatch, useSelector } from "react-redux";
+
 import { pieceMoved } from "../store";
 
 const ChessView = () => {
   const dispatch = useDispatch();
-  const position = useSelector((state) => state.chessGame.position);
+  const fen = useSelector((state) => state.chessGame.fen);
 
   function dropHandler({ sourceSquare, targetSquare, piece }) {
     // Check for promotion
@@ -15,12 +16,12 @@ const ChessView = () => {
       console.log("black pawn promoting!");
     }
 
-    dispatch(pieceMoved({ to: targetSquare, from: sourceSquare }));
+    dispatch(
+      pieceMoved({ to: targetSquare, from: sourceSquare, promotion: "q" })
+    );
   }
 
-  return (
-    <Chessboard position={position} showNotation="true" onDrop={dropHandler} />
-  );
+  return <Chessboard position={fen} showNotation="true" onDrop={dropHandler} />;
 };
 
 export default ChessView;

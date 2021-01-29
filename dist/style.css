@@ -1,4 +1,7 @@
-/*  */
 #view-container {
   display: flex;
+}
+
+.view {
+  border: 1px solid black;
 }

@@ -11,7 +11,7 @@ This scheme helps with future changes, even if it's currently redundant
 // Action Constants -- naming convention: NOUN_VERBED
 export const PIECE_MOVED = "PIECE_MOVED";
 
-// Thunk Creators -- naming convention: NOUN_VERBS
+// Thunk Creators -- naming convention: verbingNoun
 
 // Action Creators -- naming convention: nounVerbed
 export const pieceMoved = ({ from, to, promotion }) => ({
@@ -23,9 +23,10 @@ export const pieceMoved = ({ from, to, promotion }) => ({
 
 // Initial State
 const initialState = {
-  fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", // FEN Starting position,
-  history: [],
-  PGN: "",
+  fen: game.fen(),
+  history: game.history(),
+  pgn: game.pgn(),
+  legalMoves: game.moves(),
 };
 
 // Reducer
@@ -47,7 +48,8 @@ export default function chessGameReducer(state = initialState, action) {
         ...state,
         fen: game.fen(),
         history: game.history(),
-        PGN: game.pgn(),
+        pgn: game.pgn(),
+        legaMoves: game.moves(),
       };
     default:
       return state;

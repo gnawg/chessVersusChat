@@ -21,7 +21,11 @@ const ChessView = () => {
     );
   }
 
-  return <Chessboard position={fen} showNotation="true" onDrop={dropHandler} />;
+  return (
+    <div className="view">
+      <Chessboard position={fen} showNotation="true" onDrop={dropHandler} />
+    </div>
+  );
 };
 
 export default ChessView;

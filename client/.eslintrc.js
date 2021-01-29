@@ -27,5 +27,6 @@ module.exports = {
       },
     ],
     "no-case-declarations": 0,
+    "react/jsx-one-expression-per-line": "allow",
   },
 };

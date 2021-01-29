@@ -10,6 +10,9 @@
     "start-server": "nodemon server",
     "start-dev": "npm run start-server & npm run build-client-watch"
   },
+  "browserslist": [
+    "> 5%"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -41,6 +44,7 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "tmi.js": "^1.7.1"
   }
 }

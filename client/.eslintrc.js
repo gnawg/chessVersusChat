@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "airbnb", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "prettier",
+  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -13,6 +18,14 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    "react/jsx-filename-extension": [1, { extensions: [".js", "jsx"] }],
+    "react/jsx-filename-extension": ["warn", { extensions: [".js", "jsx"] }],
+    "no-unused-expressions": [
+      "error",
+      {
+        allowTernary: true,
+        allowShortCircuit: true,
+      },
+    ],
+    "no-case-declarations": 0,
   },
 };

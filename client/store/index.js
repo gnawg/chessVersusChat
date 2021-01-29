@@ -4,14 +4,14 @@ import chessGameReducer from "./chessGame";
 import chatInteractionReducer from "./chatInteraction";
 
 const reducer = combineReducers({
-  chessGameReducer,
-  chatInteractionReducer,
+  chessGame: chessGameReducer,
+  chatInteraction: chatInteractionReducer,
 });
 
 const middleware = applyMiddleware(createLogger());
 
-const store = createStore(reducer, middleware);
+// Redux Store
+export default createStore(reducer, middleware);
 
-export default store;
 export * from "./chessGame";
 export * from "./chatInteraction";

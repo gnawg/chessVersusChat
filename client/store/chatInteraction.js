@@ -1,13 +1,13 @@
 // Responsible for controlling chat interaction
 
-// Action Constants -- naming convention: VERBED_NOUN
-export const RECEIVED_MESSAGE = "RECEIVED_MESSAGE";
+// Action Constants -- naming convention: NOUN_VERBED
+export const MESSAGE_RECEIVED = "MESSAGE_RECEIVED";
 
 // Thunk Creators -- naming convention: NOUN_VERBS
 
-// Action Creators -- naming convention: NOUN_VERBED
-export const MESSAGE_RECEIVED = (payload) => ({
-  type: RECEIVED_MESSAGE,
+// Action Creators -- naming convention: nounVerbed
+export const messageReceived = (payload) => ({
+  type: MESSAGE_RECEIVED,
   payload,
 });
 
@@ -45,7 +45,7 @@ const initialState = {
 // Reducer
 export default function chatInteractionReducer(state = initialState, action) {
   switch (action.type) {
-    case RECEIVED_MESSAGE:
+    case MESSAGE_RECEIVED:
       return state;
     default:
       return state;

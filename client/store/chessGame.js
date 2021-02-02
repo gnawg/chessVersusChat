@@ -4,8 +4,7 @@ const game = Chess();
 /* One chessjs instance controls game logic, state, and history.
 Components couple with chessjs via redux actions and reducers
 Chessjs <--> Redux <--> React
-Future plans include chatbot integration, which would be run serverside,
-This scheme helps with future changes, even if it's currently redundant
+Future plans include chatbot integration, which may move this control from redux to server
 */
 
 // Action Constants -- naming convention: NOUN_VERBED
@@ -26,7 +25,8 @@ const initialState = {
   fen: game.fen(),
   history: game.history(),
   pgn: game.pgn(),
-  legalMoves: game.moves(),
+  legalMoves: game.moves({ verbose: true }),
+  toMove: game.turn(), // "b", "w"
 };
 
 // Reducer
@@ -36,20 +36,21 @@ export default function chessGameReducer(state = initialState, action) {
 
   switch (action.type) {
     case PIECE_MOVED:
-      const attemptMove = {
+      const moveObj = {
         from: action.from,
         to: action.to,
         promotion: action.promotion,
       };
 
-      game.move(attemptMove);
+      game.move(moveObj);
 
       return {
         ...state,
         fen: game.fen(),
         history: game.history(),
         pgn: game.pgn(),
-        legaMoves: game.moves(),
+        legalMoves: game.moves({ verbose: true }),
+        toMove: game.turn(),
       };
     default:
       return state;

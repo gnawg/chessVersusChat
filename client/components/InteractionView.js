@@ -1,20 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { connectingToChat } from "../store";
+import tmi from "tmi.js";
+import { chatConnected, voteReceived } from "../store";
 
 const InteractionView = () => {
   const dispatch = useDispatch();
-  const legalMoves = useSelector((state) => state.chessGame.legalMoves);
-  const channel = useSelector((state) => state.chatInteraction.channel);
+  const { turn, legalMoves } = useSelector((state) => state.chessGame);
+  const { playerColor, channel, votes } = useSelector(
+    (state) => state.chatInteraction
+  );
   const [channelInput, setChannelInput] = useState("");
+  const [tmiClient, setTmiClient] = useState();
 
   const handleChannelInput = (evt) => {
     setChannelInput(evt.target.value);
-    console.log(channelInput);
   };
 
-  const handleConnectChat = () => {
-    dispatch(connectingToChat(channelInput));
+  const handleConnectChat = async () => {
+    const client = new tmi.Client({
+      channels: [channelInput],
+    });
+
+    await client.connect();
+
+    client.on("message", (chan, tags, message) => {
+      if (playerColor == turn) return; // Only collect votes
+
+      console.log(`${tags["display-name"]}: ${message}`);
+      // Check if the message equals the san for a legal move (i.e. is a vote)
+      if (legalMoves.some((move) => move.san === message)) {
+        console.log("dispatching vote", message);
+        dispatch(voteReceived(tags["display-name"], message));
+      }
+    });
+    dispatch(chatConnected(channelInput));
+    setTmiClient(client);
+  };
+
+  const handleDisconnectChat = async () => {
+    tmiClient.disconnect();
+    dispatch(chatConnected(""));
   };
 
   return (
@@ -30,11 +55,17 @@ const InteractionView = () => {
           {channelInput ? `Connect to ${channelInput} chat` : `Enter a channel`}
         </button>
       </div>
+
       {/* After connecting to chat */}
       {channel ? (
         <>
           <h1>Connected to {channel}!</h1>
-          <div>moves: {legalMoves}</div>
+          <div>
+            moves:{" "}
+            {legalMoves.map((move) => (
+              <div>{`${move.san}: ${votes[move.san] || 0}`}</div>
+            ))}
+          </div>
         </>
       ) : (
         <h1>Not connected</h1>

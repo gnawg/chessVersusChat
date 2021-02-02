@@ -1,6 +1,8 @@
 import React from "react";
 import Chessboard from "chessboardjsx";
 import { useDispatch, useSelector } from "react-redux";
+import Chess from "chess.js";
+// chess component for validation
 
 import { pieceMoved } from "../store";
 
@@ -9,6 +11,9 @@ const ChessView = () => {
   const fen = useSelector((state) => state.chessGame.fen);
 
   function dropHandler({ sourceSquare, targetSquare, piece }) {
+    const chessValidator = new Chess(fen);
+    const moveObj = { to: targetSquare, from: sourceSquare, promotion: "q" };
+
     // Check for promotion
     if (piece === "wP" && targetSquare[1] === "8") {
       console.log("white pawn promoting!");
@@ -16,9 +21,10 @@ const ChessView = () => {
       console.log("black pawn promoting!");
     }
 
-    dispatch(
-      pieceMoved({ to: targetSquare, from: sourceSquare, promotion: "q" })
-    );
+    // Validate the move before sending it to redux
+    if (chessValidator.move(moveObj)) {
+      dispatch(pieceMoved(moveObj));
+    }
   }
 
   return (

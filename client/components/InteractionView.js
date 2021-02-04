@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import tmi from "tmi.js";
-import { chatConnected, voteReceived } from "../store";
+import { chatConnected, receivingMessage } from "../store";
 
 const InteractionView = () => {
   const dispatch = useDispatch();
-  const { turn, legalMoves } = useSelector((state) => state.chessGame);
+  const { toMove, legalMoves } = useSelector((state) => state.chessGame);
   const { playerColor, channel, votes } = useSelector(
     (state) => state.chatInteraction
   );
@@ -24,14 +24,7 @@ const InteractionView = () => {
     await client.connect();
 
     client.on("message", (chan, tags, message) => {
-      if (playerColor == turn) return; // Only collect votes
-
-      console.log(`${tags["display-name"]}: ${message}`);
-      // Check if the message equals the san for a legal move (i.e. is a vote)
-      if (legalMoves.some((move) => move.san === message)) {
-        console.log("dispatching vote", message);
-        dispatch(voteReceived(tags["display-name"], message));
-      }
+      dispatch(receivingMessage(tags["display-name"], message));
     });
     dispatch(chatConnected(channelInput));
     setTmiClient(client);

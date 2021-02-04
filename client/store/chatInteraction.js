@@ -1,9 +1,27 @@
 // Reducer is responsible for controlling chat interaction
-// Doesn't know anything about chess -- only handles vote-keeping interactions
+// Doesn't know anything about chess -- only handles config and vote-keeping interactions
 
 // Action Constants -- naming convention: NOUN_VERBED
-export const VOTE_RECEIVED = "VOTE_RECEIVED";
+
 export const CHAT_CONNECTED = "CHAT_CONNECTED";
+export const VOTE_RECEIVED = "VOTE_RECEIVED";
+
+// Thunk Creators -- naming convention: verbingNoun
+
+export const receivingMessage = (name, message) => (dispatch, getState) => {
+  // Get current legal moves
+  const {
+    chessGame: { legalMoves },
+  } = getState();
+
+  // Check if the message equals the san for a legal move (i.e. is a vote)
+  if (legalMoves.some((move) => move.san === message)) {
+    console.log("dispatching vote", message);
+    dispatch(voteReceived(name, message));
+  } else {
+    console.log(`message ${message} is not a vote`);
+  }
+};
 
 // Action Creators -- naming convention: nounVerbed
 export const voteReceived = (name, vote) => ({
@@ -16,8 +34,6 @@ export const chatConnected = (channel) => ({
   type: CHAT_CONNECTED,
   channel,
 });
-
-// Thunk Creators -- naming convention: verbingNoun
 
 // Initial State
 const initialState = {
@@ -47,7 +63,6 @@ export default function chatInteractionReducer(state = initialState, action) {
       // Voting for a vote that is different from the current vote
       else if (prevVote !== action.vote) {
         const prevVoteCount = state.votes[prevVote];
-
         return {
           ...state,
           votes: {

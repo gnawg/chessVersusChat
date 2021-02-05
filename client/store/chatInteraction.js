@@ -1,6 +1,8 @@
 // Reducer is responsible for controlling chat interaction
 // Doesn't know anything about chess -- only handles config and vote-keeping interactions
 
+import { pieceMoved, PIECE_MOVED } from "./chessGame";
+
 // Action Constants -- naming convention: NOUN_VERBED
 
 export const CHAT_CONNECTED = "CHAT_CONNECTED";
@@ -21,6 +23,21 @@ export const receivingMessage = (name, message) => (dispatch, getState) => {
   } else {
     console.log(`message ${message} is not a vote`);
   }
+};
+
+export const countingVotes = () => (dispatch, getState) => {
+  const {
+    chatInteraction: { votes },
+  } = getState();
+
+  const [san] = Object.entries(votes).reduce(
+    ([bestMove, bestVotes], [currMove, currVotes]) => {
+      if (bestVotes > currVotes) return [bestMove, bestVotes];
+      else return [currMove, currVotes];
+    }
+  );
+
+  dispatch(pieceMoved({ san: san }));
 };
 
 // Action Creators -- naming convention: nounVerbed
@@ -46,6 +63,12 @@ const initialState = {
 // Reducer
 export default function chatInteractionReducer(state = initialState, action) {
   switch (action.type) {
+    case PIECE_MOVED:
+      return {
+        ...state,
+        votes: {},
+        voters: {},
+      };
     case VOTE_RECEIVED:
       const prevVote = state.voters[action.name];
       const newVoteCount = state.votes[action.vote]

@@ -13,11 +13,12 @@ export const PIECE_MOVED = "PIECE_MOVED";
 // Thunk Creators -- naming convention: verbingNoun
 
 // Action Creators -- naming convention: nounVerbed
-export const pieceMoved = ({ from, to, promotion }) => ({
+export const pieceMoved = ({ from, to, promotion, san }) => ({
   type: PIECE_MOVED,
   from,
   to,
   promotion,
+  san,
 });
 
 // Initial State
@@ -36,13 +37,20 @@ export default function chessGameReducer(state = initialState, action) {
 
   switch (action.type) {
     case PIECE_MOVED:
-      const moveObj = {
-        from: action.from,
-        to: action.to,
-        promotion: action.promotion,
-      };
+      if (action.san) game.move(action.san);
+      else if (action.from && action.to) {
+        const moveObj = {
+          from: action.from,
+          to: action.to,
+          promotion: action.promotion,
+        };
 
-      game.move(moveObj);
+        game.move(moveObj);
+      } else {
+        const moves = game.moves();
+
+        game.move(moves[Math.floor(Math.random() * moves.length)]);
+      }
 
       return {
         ...state,

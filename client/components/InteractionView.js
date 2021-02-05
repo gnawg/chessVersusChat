@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import tmi from "tmi.js";
+
 import { chatConnected, receivingMessage } from "../store";
+import Timer from "./Timer";
 
 const InteractionView = () => {
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ const InteractionView = () => {
   return (
     <div className="view">
       {/* Connect to chat config */}
-      <div>
+      <div className="channel-join-form">
         <input type="text" value={channelInput} onChange={handleChannelInput} />
         <button
           type="button"
@@ -50,19 +52,23 @@ const InteractionView = () => {
       </div>
 
       {/* After connecting to chat */}
-      {channel ? (
-        <>
-          <h1>Connected to {channel}!</h1>
-          <div>
-            moves:{" "}
-            {legalMoves.map((move) => (
-              <div>{`${move.san}: ${votes[move.san] || 0}`}</div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <h1>Not connected</h1>
-      )}
+      <div className="channel-connection-status">
+        {channel ? (
+          <>
+            <h1>Connected to {channel}!</h1>
+            <div>
+              moves:{" "}
+              {legalMoves.map((move) => (
+                <div>{`${move.san}: ${votes[move.san] || 0}`}</div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <h1>Not connected</h1>
+        )}
+      </div>
+
+      <Timer />
     </div>
   );
 };

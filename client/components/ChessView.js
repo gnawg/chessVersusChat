@@ -8,7 +8,7 @@ import { pieceMoved } from "../store";
 
 const ChessView = () => {
   const dispatch = useDispatch();
-  const fen = useSelector((state) => state.chessGame.fen);
+  const { fen, toMove } = useSelector((state) => state.chessGame);
 
   function dropHandler({ sourceSquare, targetSquare, piece }) {
     const chessValidator = new Chess(fen);
@@ -29,7 +29,15 @@ const ChessView = () => {
 
   return (
     <div className="view">
+      <h1>{toMove === "w" ? "White" : "Black"} To Move!</h1>
+
       <Chessboard position={fen} showNotation="true" onDrop={dropHandler} />
+
+      <div>
+        <button type="button">Start Game as Black</button>
+        <button type="button">Start Game as White</button>
+        <button type="button">Start Game as Random</button>
+      </div>
     </div>
   );
 };

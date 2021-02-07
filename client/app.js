@@ -1,8 +1,11 @@
 import React from "react";
-import { ChatView, ChessView, InteractionView } from "./components";
+import { ChatView, ChessView, InteractionView, ConfigView } from "./components";
 
 const App = () => (
   <div id="view-container">
+    {/* Displays configuration options */}
+    <ConfigView />
+
     {/* Displays the game and related information */}
     <ChessView />
 
